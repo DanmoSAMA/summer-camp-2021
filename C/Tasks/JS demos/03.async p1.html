@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    //传入参数 n，表示这个函数执行的时间（毫秒）
+    //执行的结果是 n + 200，这个值将用于下一步骤
+
+    // async前缀的作用：使函数返回Promise
+    // 该函数的返回值已经是Promise，故不需要加async前缀
+
+    function takeLongTime(n) {
+      return new Promise(resolve => {
+        setTimeout(() => resolve(n + 200), n);
+      });
+    }
+
+    function step1(n) {
+      console.log(`step1 with ${n}`);
+      return takeLongTime(n);
+    }
+
+    function step2(n) {
+      console.log(`step2 with ${n}`);
+      return takeLongTime(n);
+    }
+
+    function step3(n) {
+      console.log(`step3 with ${n}`);
+      return takeLongTime(n);
+    }
+
+    // Promise的写法：
+
+    // function doIt() {
+    //   console.time("doIt");
+    //   const time1 = 300;
+    //   step1(time1)
+    //     .then(time2 => step2(time2))
+    //     .then(time3 => step3(time3))
+    //     .then(result => {
+    //       console.log(`result is ${result}`);
+    //       console.timeEnd("doIt");
+    //     });
+    // }
+
+    // doIt();
+
+    // await后边加一个表达式
+    // 如果它等到的不是一个Promise对象，那await表达式的运算结果就是它等到的东西
+    // 如果它等到的是一个Promise对象，需要等待Promise对象resolve，然后得到resolve的值，作为await表达式的运算结果
+
+    async function doIt() {
+      console.time("doIt");
+      const time1 = 300;
+      const time2 = await step1(time1);  // step1(time1)返回一个Promise，需拿到它resolve的值，再赋值给time2
+      const time3 = await step2(time2);  // step2(time1)返回一个Promise，需拿到它resolve的值，再赋值给time3
+      const result = await step3(time3); // step3(time1)返回一个Promise，需拿到它resolve的值，再赋值给result
+      console.log(`result is ${result}`);
+      console.timeEnd("doIt");
+    }
+
+    doIt();
+
+    /*
+      输出结果：
+      step1 with 300
+      step2 with 500
+      step3 with 700
+      result is 900
+      doIt: 1502.43701171875 ms
+    */
+
+  </script>
+</body>
+
+</html>

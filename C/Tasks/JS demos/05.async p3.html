@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function takeLongTime(n) {
+      return new Promise(resolve => {
+        setTimeout(() => resolve(n + 200), n);
+      });
+    }
+
+    function step1(n) {
+      console.log(`step1 with ${n}`);
+      return takeLongTime(n);
+    }
+
+    function step2(n) {
+      console.log(`step2 with ${n}`);
+      return takeLongTime(n);
+    }
+
+    function step3(n) {
+      console.log(`step3 with ${n}`);
+      return takeLongTime(n);
+    }
+
+    async function doIt() {
+      try {
+        console.time("doIt");
+        const time1 = 300;
+        const time2 = await step1(time1);  // step1(time1)返回一个Promise，需拿到它resolve的值，再赋值给time2
+        const time3 = await step2(time2);  // step2(time1)返回一个Promise，需拿到它resolve的值，再赋值给time3
+        const result = await step3(time3); // step3(time1)返回一个Promise，需拿到它resolve的值，再赋值给result
+        console.log(`result is ${result}`);
+        console.timeEnd("doIt");
+      }
+      catch (err){
+        console.error(err);
+      }
+    }
+
+    doIt();
+  </script>
+</body>
+
+</html>
