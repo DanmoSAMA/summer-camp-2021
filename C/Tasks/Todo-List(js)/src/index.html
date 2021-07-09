@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo-List</title>
+</head>
+<body>
+  <div id="wrapper">
+    <h1 id="title">todos</h1>
+    <div id="todoapp">
+      <div id="header">
+        <span id="arrow">∨</span>
+        <input type="text" placeholder="What needs to be done?">
+      </div>
+      <ul id="main">
+        <li class="item">
+          <input type="checkbox" class="toggle">
+          <span>第一条</span>
+          <div class="delete-btn">×</div>
+        </li>
+        <li class="item">
+          <input type="checkbox" class="toggle">
+          <span>第二条</span>
+          <div class="delete-btn">×</div>
+        </li>
+        <li class="item">
+          <input type="checkbox" class="toggle">
+          <span>第三条</span>
+          <div class="delete-btn">×</div>
+        </li>
+        <li id="footer">
+          <ul>
+            <a href="javascript:;" id="stati">
+              3 items left
+            </a>
+            <a href="javascript:;" class="btn selected">
+              All
+            </a>
+            <a href="javascript:;" class="btn">
+              Active
+            </a>
+            <a href="javascript:;" class="btn">
+              Completed
+            </a>
+            <a href="javascript:;" id="clear">
+              Clear completed
+            </a>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

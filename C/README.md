@@ -52,5 +52,10 @@ Vue还是之后再学习。
 
 ## 7.9
 
-* 8:40 ~ 11: 30：http-server，快完了
-* 12:20 ~ ：完成http-server
+* 8:40~11: 30：http-server
+* 12:20~14:15：完成http-server
+* 14:15~17:30：todo-list(js)
+
+* 19:00~22:10：同上，html+css完成，JS完成一半 
+
+尝试用了webpack，但是有一处报错

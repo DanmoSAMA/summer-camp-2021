@@ -6,7 +6,7 @@ exports.getTime = function () {
   let minutes = time.getMinutes().toString();
   let seconds = time.getSeconds().toString();
   let hours = time.getHours().toString();
-  let months = time.getMonth().toString();
+  let months = (time.getMonth() + 1).toString();
   let date = time.getDate();
   
   if (seconds.length < 2) {

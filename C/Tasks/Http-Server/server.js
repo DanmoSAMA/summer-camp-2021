@@ -5,16 +5,19 @@ const http = require('http');
 const url = require('url');
 const path = require('path');
 
-const { autoIndex } = require('./autoIndex');
-const { getTime } = require('./getTime');
-const { help } = require('./help');
-
 const config = {
   port: "8080",
   addr: "127.0.0.1",
-  // showList: true,
+  showList: true,
   autoIndex: true
 }
+
+// 因server.js也有对autoIndex的引用，故先导出config，让autoIndex先拿到config对象，然后server.js再引用autoIndex
+exports.config = config; 
+
+const { autoIndex } = require('./autoIndex');
+const { getTime } = require('./getTime');
+const { help } = require('./help');
 
 let argIndex = new Array;
 let args = process.argv.slice(2); // 前两个元素是路径，从数组第三个元素开始取，获得命令行参数等信息
@@ -35,9 +38,9 @@ argIndex.forEach((index) => {     // forEach的第一个参数是item，但argIn
       case "-a":
         config.addr = args[index + 1];
         return;
-      // case "-d":
-      //   config.showList = false;
-      //   return;
+      case "-d":
+        config.showList = false;
+        return;
       case "-i":
         config.autoIndex = false;
         return;
@@ -51,7 +54,7 @@ argIndex.forEach((index) => {     // forEach的第一个参数是item，但argIn
 });
 
 const server = http.createServer((req, res) => {
-  console.log(getTime(), "\t", req.method, req.url);
+  console.log(getTime() + "\t" + '\033[34m ' + req.method + ' ' + req.url + '\033[37m ');
 
   let urlPath = url.parse(req.url).pathname; // 获得url的末尾字段
   let targetPath = path.join("./", urlPath); // 拼接路径，/末尾字段
@@ -125,10 +128,11 @@ catch (err) {
   process.exit(-1);
 }
 
-console.log('\033[33m Starting up http-server, serving \033' + '\033[34m ./\033');
-console.log('\033[33m Available on:\033');
-console.log('\033[37m   http://\033' + config.addr + ':' + '\033[32m' + config.port + '\033');
-console.log('\033[37m Hit CTRL-C to stop the server \033');
+console.log('\033[33m Starting up http-server, serving' + '\033[34m ./');
+console.log('\033[33m Available on:');
+console.log('\033[37m   http://' + config.addr + ':' + '\033[32m' + config.port);
+console.log('\033[37m Hit CTRL-C to stop the server');
+console.log('\033[37m');
 
 // console.log(`
 //   Starting up http-server, serving ./
@@ -137,4 +141,3 @@ console.log('\033[37m Hit CTRL-C to stop the server \033');
 //   Hit CTRL-C to stop the server`
 // )
 
-// exports.config = config;

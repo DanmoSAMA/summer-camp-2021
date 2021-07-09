@@ -2,9 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
-// const config = require('./server');
-
-// console.log(config); // 是一个空对象，bug
+const { config } = require('./server');    
+//如果不套大括号，输出config的结果为：{config: { port: '8080', addr: '127.0.0.1', showList: true, autoIndex: true }}
 
 // 将整个函数导出
 exports.autoIndex = (targetPath) => {
@@ -14,9 +13,9 @@ exports.autoIndex = (targetPath) => {
   .map((filePath) => path.join(targetPath, filePath))
   .map((path) => path.replace("\\", "/"));
   
-  // if (config.showList) {
-  //   console.log(urls.join('\n'));
-  // }
+  if (config.showList) {
+    console.log(urls.join('\n'));
+  }
 
   let items = new Array; // 声明空数组，存放目录下的子目录/文件，再插入html字符串中
 
