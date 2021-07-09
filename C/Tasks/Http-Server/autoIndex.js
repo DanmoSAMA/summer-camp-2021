@@ -2,21 +2,26 @@
 
 const fs = require('fs');
 const path = require('path');
+// const config = require('./server');
+
+// console.log(config); // 是一个空对象，bug
 
 // 将整个函数导出
-exports.formPage = (targetPath) => {
+exports.autoIndex = (targetPath) => {
   let files = fs.readdirSync(targetPath); // 获取该目录下所有文件名
 
   urls = files
-  .map((f) => path.join(targetPath, f))
+  .map((filePath) => path.join(targetPath, filePath))
   .map((path) => path.replace("\\", "/"));
+  
+  // if (config.showList) {
+  //   console.log(urls.join('\n'));
+  // }
 
-  console.log(urls);
-
-  let htmls = new Array; // 声明空数组，存放目录下的子目录/文件，再插入html字符串中
+  let items = new Array; // 声明空数组，存放目录下的子目录/文件，再插入html字符串中
 
   for (let i = 0; i < urls.length; i++) {
-    htmls.push(`<li><a href="${urls[i]}">${files[i]}</a></li>`);
+    items.push(`<li><a href="${urls[i]}">${files[i]}</a></li>`);
   }
 
   // 将这些内容返回，server拿到该字符串后，将会res.end()显示在屏幕上
@@ -29,12 +34,12 @@ exports.formPage = (targetPath) => {
         name="viewport"
         content="width=device-width, initial-scale=1.0"
       />
-      <title>Document</title>
+      <title>Http-Server</title>
     </head>
     <body>
       <h1>Index Of ${targetPath}</h1>
       <ul>
-        ${htmls.join("\n")}
+        ${items.join("\n")}
       </ul>
     </body>
     <style>
