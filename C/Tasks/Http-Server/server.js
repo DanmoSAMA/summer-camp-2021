@@ -3,7 +3,7 @@ const fs = require('fs');
 const http = require('http');
 const url = require('url');
 const path = require('path');
-const { formPage } = require('./formPage');  // 必须套大括号
+const { formPage }  = require('./formPage');
 
 const config = {
   port: "8080",
@@ -31,13 +31,16 @@ const server = http.createServer((req, res) => {
 
     } else if (stats.isFile && stats.isFile()) {
       fs.readFile(targetPath, (err, file) => {
+        if (err) throw err;
         if (!urlPath.endsWith('jpg') && !urlPath.endsWith('png') && !urlPath.endsWith('gif')) {
-          res.writeHead(200,{'Content-Type':'text/plain;charset=utf-8'}); // 防止文本出现中文乱码
-
-        } else if (urlPath.endsWith('html') || urlPath.endsWith('html')) {
-          res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});  // 设置了为什么无效？
-
-        } else res.writeHead(200);
+          if (urlPath.endsWith('html') || urlPath.endsWith('htm')) {
+            res.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });  // html文件特殊处理
+          } else {
+            res.writeHead(200, { 'Content-Type': 'text/plain;charset=utf-8' }); // 防止文本出现中文乱码
+          }
+        } else {
+          res.writeHead(200);
+        }
         res.end(file);  // 将文件内容显示在页面上
       })
     }
