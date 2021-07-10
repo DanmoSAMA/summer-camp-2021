@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <style>
+    img {
+      width: 300px;
+    }
+    .hot{
+      outline: 5px solid red;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <button @click="toggleShow">切换图片显示状态</button>
+    <button @click="tempUp">升高温度</button>
+    <button @click="tempDown">降低温度</button>
+    <br>
+    <p>{{'当前是'+ temp + '度'}}</p>
+    <br><br>
+    <img :src="imgSrc1" :title="title1" :class="{hot:temp>30}" v-show="isShow">
+    <br><br>
+    <img :src="imgSrc2" :title="title2" v-show="isShow">
+  </div>
+  <script>
+    let app = new Vue({
+      el: "#app",
+      data: {
+        imgSrc1: "./img/1.jpg",
+        imgSrc2: "./img/2.jpg",
+        title1: "神乃木",
+        title2: "御冥",
+        isShow: true,
+        temp: 25
+      },
+      methods: {
+        toggleShow: function () {
+          this.isShow = !this.isShow;
+        },
+        tempUp: function () {
+          this.temp++;
+        },
+        tempDown: function () {
+          this.temp--;
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

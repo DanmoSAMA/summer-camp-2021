@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    li {
+      list-style: none;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+
+<body>
+  <ul id="app">
+    <p>输入角色名：</p>
+    <!--
+      v-model可以便捷地设置和获取表单元素的值，
+      input的value和newName动态双向绑定，即一方的值变化时另一方也会立即改变
+    -->
+    <input type="text" v-model="newName" @keyup.enter="insert">
+    <!--@keyup.enter表示按下回车键，这里是对v-on的拓展-->
+    <li v-for="(item, index) in nameArr">
+      <!--v-for用于生成列表，in可以是数组...-->
+      {{index + 1}}. 逆转裁判的角色：{{item}}
+    </li>
+    <h4 v-for="item in person">
+      <!--数组内的元素是对象的情况-->
+      神乃木前辈的爱好：{{item.hobby}}
+    </h4>
+  </ul>
+  <script>
+    // 基于数据的开发方式：无需关心dom，只要数据发生改变，页面内容就能响应式地发生改变
+    let app = new Vue({
+      el: "#app",
+      data: {
+        nameArr: ["成步堂龙一", "御剑怜恃", "王泥喜法介", "夕月心音", "神乃木庄龙"],
+        person: [{ name: "神乃木庄龙", job: "律师、检察官", hobby: "喝咖啡" }],
+        newName: ""
+      },
+      methods: {
+        insert: function () {
+          this.nameArr.push(this.newName); // 不要忘记this
+        }
+      },
+
+    })
+  </script>
+</body>
+
+</html>
