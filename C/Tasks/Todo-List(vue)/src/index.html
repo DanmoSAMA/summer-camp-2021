@@ -9,29 +9,36 @@
 <body>
   <div id="wrapper">
     <h1 id="title">todos</h1>
+    <!--以下为被挂载的元素：-->
     <div id="todoapp">
       <div id="header">
         <span id="arrow">∨</span>
-        <input type="text" placeholder="What needs to be done?" id="input" minlength="1" maxlength="300">
+        <input type="text" placeholder="What needs to be done?" id="input" minlength="1" maxlength="300" v-model="todo" @keyup.enter="insert">
       </div>
       <ul id="main">
+        <li class="item" v-for="item in todoArr">
+          <input type="checkbox" class="toggle">
+          <span contenteditable="true">{{ item }}</span>
+          <div class="delete-btn" @click="delete">x</div>
+        </li>
         <li id="footer">
           <ul>
-            <a href="javascript:;" id="stati">
-              0 item left
-            </a>
-            <a href="javascript:;" class="btn selected" id="show-all-btn">
+            <li href="javascript:;" id="stati">
+              {{todoNum === 1 ? todoNum + ' item left' : todoNum + ' items left'}}
+              <!--在插值表达式中加入判断-->
+            </li>
+            <li href="javascript:;" class="btn selected" id="show-all-btn">
               All
-            </a>
-            <a href="javascript:;" class="btn" id="show-active-btn">
+            </li>
+            <li href="javascript:;" class="btn" id="show-active-btn">
               Active
-            </a>
-            <a href="javascript:;" class="btn" id="show-completed-btn">
+            </li>
+            <li href="javascript:;" class="btn" id="show-completed-btn">
               Completed
-            </a>
-            <a href="javascript:;" id="clear">
+            </li>
+            <li href="javascript:;" id="clear">
               Clear completed
-            </a>
+            </li>
           </ul>
         </li>
       </div>

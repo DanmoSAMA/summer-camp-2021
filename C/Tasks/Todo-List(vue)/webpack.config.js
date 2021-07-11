@@ -27,6 +27,11 @@ module.exports = {
     })
   ],
   resolve: {
-    extensions: ['.js']
+    extensions: ['.js'],
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js' 
+      // 用 webpack 1 时需用 'vue/dist/vue.common.js'
+      // 若此处不配置，则挂载的元素会从页面上消失
+    }
   }
 }

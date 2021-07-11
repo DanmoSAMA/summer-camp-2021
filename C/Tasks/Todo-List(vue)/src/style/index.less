@@ -166,36 +166,43 @@ body {
         padding: 0 20px;
 
         ul {
-          a {
+          li {
             display: inline-block;
+            cursor: pointer;
             font: 16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
             color: #777;
           }
-          a:first-child {
+          li:first-child {
             cursor: default;
             margin-right: 60px;
           }
-          a.btn {
+          li.btn {
             margin-right: 10px;
             padding: 3px 8px;
             // border-radius: 3px;
           }
-          a.selected {
+          li:hover {
+            outline: 1px solid #ECD5D5;
+          }
+          li:first-child:hover {
+            outline: none;
+          }
+          li.selected {
             // border: 1px solid #ECD5D5;
             outline: 1px solid #ECD5D5;
 
             // 牺牲一点圆角效果
             // 我想到的防止border干扰的方法只有绝对定位，对每个按钮定位一次有些麻烦
           }
-          a#clear {
+          li#clear {
             margin-right: 0;
             margin-left: 22px;
             display: none;
           }
-          a#clear.appear {
+          li#clear.appear {
             display: inline-block;
           }
-          a#clear:hover {
+          li#clear:hover {
             text-decoration: underline;
           }
         } 
