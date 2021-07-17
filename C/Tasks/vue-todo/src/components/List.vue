@@ -40,7 +40,7 @@ export default {
       this.todos.forEach((todo) => {
         if (todo.id === data) {
           // console.log("item即将被删除");
-          this.todos = this.todos.filter(todo => todo.id !== data);
+          this.todos = this.todos.filter((todo) => todo.id !== data);
         }
       });
     });

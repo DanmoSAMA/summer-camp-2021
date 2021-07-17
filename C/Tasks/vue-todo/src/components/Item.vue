@@ -17,12 +17,12 @@ export default {
   props: ["todo"],
   methods: {
     handleCheck(id) {
-      this.$bus.$emit('handleCheck', id);
+      this.$bus.$emit("handleCheck", id);
     },
     handleDelete(id) {
-      this.$bus.$emit('handleDelete', id);
-    }
-  }
+      this.$bus.$emit("handleDelete", id);
+    },
+  },
 };
 </script>
 
