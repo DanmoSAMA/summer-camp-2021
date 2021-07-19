@@ -1,34 +1,38 @@
 <template>
   <div id="header">
-    <span id="arrow" :class="{selected: this.isAll}">∨</span>
+    <span id="arrow" :class="{ selected: isAll }" @click="selectAll">∨</span>
     <input
       type="text"
       placeholder="What needs to be done?"
       id="input"
       minlength="1"
       maxlength="300"
-      @keyup.enter="add"
+      @keydown.enter="addTodo"
     />
   </div>
 </template>
 
 <script>
-import {nanoid} from 'nanoid'
+import { nanoid } from "nanoid";
 
 export default {
   name: "TodoHeader",
-  data(){
-    return {
-      isAll: false
-    }
+  props: ["todos", "undoneNum"],
+  computed: {
+    isAll() {
+      return this.todos.length === this.todos.length - this.undoneNum;
+    },
   },
   methods: {
-    add(event) {
-      const todo = {id: nanoid(), title: event.target.value, done: false};
-      this.$bus.$emit('receive',todo);
+    addTodo(event) {
+      const todo = { id: nanoid(), title: event.target.value, done: false };
+      this.$bus.$emit("addTodo", todo);
       event.target.value = "";
-    }
-  }
+    },
+    selectAll() {
+      this.$bus.$emit("selectAll");
+    },
+  },
 };
 </script>
 

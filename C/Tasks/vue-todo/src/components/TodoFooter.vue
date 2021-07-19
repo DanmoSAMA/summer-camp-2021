@@ -1,11 +1,35 @@
 <template>
   <li id="footer">
     <ul>
-      <a href="javascript:;" id="stati"> {{ doneTotal }} item left </a>
-      <a href="javascript:;" class="btn selected" id="show-all-btn"> All </a>
-      <a href="javascript:;" class="btn" id="show-active-btn"> Active </a>
-      <a href="javascript:;" class="btn" id="show-completed-btn"> Completed </a>
-      <a href="javascript:;" id="clear"> Clear completed </a>
+      <a href="javascript:;" id="stati"> {{ undoneNum }} item left </a>
+      <a
+        href="javascript:;"
+        class="btn"
+        id="show-all-btn"
+        @click="setState('All')"
+        :class="{selected: footerState === 'All'}"
+      >
+        All
+      </a>
+      <a
+        href="javascript:;"
+        class="btn"
+        id="show-active-btn"
+        @click="setState('Active')"
+        :class="{selected: footerState === 'Active'}"
+      >
+        Active
+      </a>
+      <a
+        href="javascript:;"
+        class="btn"
+        id="show-completed-btn"
+        @click="setState('Completed')"
+        :class="{selected: footerState === 'Completed'}"
+      >
+        Completed
+      </a>
+      <a href="javascript:;" id="clear" v-show="doneNum > 0" @click="clearDone"> Clear completed </a>
     </ul>
   </li>
 </template>
@@ -13,16 +37,20 @@
 <script>
 export default {
   name: "TodoFooter",
-  props: ["todos"],
+  props: ["todos", "undoneNum", "footerState"],
   computed: {
-    doneTotal() {
-      // return this.todos.filter(todo => !todo.done).length;
-      return this.todos.reduce((pre, current) => pre + (!current.done ? 1 : 0), 0); // 第二个参数是统计的初始值
-    },
-    isAll() {
-      return this.todos.length === this.doneTotal;
+    doneNum() {
+      return this.todos.length - this.undoneNum;
     }
-  }
+  },
+  methods: {
+    setState(state) {
+      this.$bus.$emit("setState", state);
+    },
+    clearDone() {
+      this.$bus.$emit("clearDone");
+    }
+  },
 };
 </script>
 
@@ -57,7 +85,6 @@ export default {
     a#clear {
       margin-right: 0;
       margin-left: 22px;
-      display: none;
     }
 
     a#clear.appear {

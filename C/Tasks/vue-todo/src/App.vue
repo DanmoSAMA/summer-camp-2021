@@ -2,8 +2,8 @@
   <div id="wrapper">
     <h1 id="title">todos</h1>
     <div id="todoapp">
-      <TodoHeader />
-      <List />
+      <TodoHeader :todos="todos" :undoneNum="undoneNum"/>
+      <List :todos="todos" :undoneNum="undoneNum" :footerState="footerState" />
     </div>
   </div>
 </template>
@@ -15,6 +15,68 @@ import List from "./components/List";
 export default {
   name: "App",
   components: { TodoHeader, List },
+  data() {
+    return {
+      todos: [],
+      footerState: "All", // 'All', 'Active', 'Completed'
+    };
+  },
+  computed: {
+    undoneNum() {
+      let undoneNum = 0;
+      this.todos.forEach((item) => {
+        if (!item.done) undoneNum++;
+      });
+      return undoneNum;
+    },
+  },
+  mounted() {
+    this.$bus.$on("addTodo", (data) => {
+      if (data.title === "") return;
+      this.todos.unshift(data);
+    });
+    this.$bus.$on("handleCheck", (data) => {
+      this.todos.forEach((todo) => {
+        if (todo.id === data) {
+          todo.done = !todo.done;
+        }
+      });
+    });
+    this.$bus.$on("handleDelete", (data) => {
+      this.todos.forEach((todo) => {
+        if (todo.id === data) {
+          this.todos = this.todos.filter((todo) => todo.id !== data);
+        }
+      });
+    });
+    this.$bus.$on("selectAll", () => {
+      let doneNum = 0;
+      this.todos.forEach((todo) => {
+        if (todo.done) doneNum++;
+      });
+      if (doneNum !== this.todos.length) {
+        this.todos.forEach((todo) => {
+          todo.done = true;
+        });
+      } else {
+        this.todos.forEach((todo) => {
+          todo.done = false;
+        });
+      }
+    });
+    this.$bus.$on("setState", (state) => {
+      this.footerState = state;
+    });
+    this.$bus.$on("clearDone", () => {
+      let leftTodos = new Array;
+      this.todos.forEach((item) => {
+        if(!item.done) {
+          leftTodos.push(item);
+        }
+      })
+      this.todos = leftTodos;
+    });
+  },
 };
 </script>
 
@@ -68,6 +130,7 @@ body {
 #wrapper {
   width: 550px;
   margin: 0 auto;
+  padding-bottom: 100px;
 
   #title {
     color: #e8d7d7;

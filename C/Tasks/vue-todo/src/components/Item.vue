@@ -4,7 +4,7 @@
       type="checkbox"
       class="toggle"
       :checked="todo.done"
-      @change="handleCheck(todo.id)"
+      @click="handleCheck(todo.id)"
     />
     <span contenteditable="true">{{ todo.title }}</span>
     <div class="delete-btn" @click="handleDelete(todo.id)">×</div>
@@ -21,8 +21,8 @@ export default {
     },
     handleDelete(id) {
       this.$bus.$emit("handleDelete", id);
-    },
-  },
+    }
+  }
 };
 </script>
 
