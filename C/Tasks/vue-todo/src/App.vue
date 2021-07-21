@@ -2,7 +2,7 @@
   <div id="wrapper">
     <h1 id="title">todos</h1>
     <div id="todoapp">
-      <TodoHeader :todos="todos" :undoneNum="undoneNum"/>
+      <TodoHeader :todos="todos" :undoneNum="undoneNum" />
       <List :todos="todos" :undoneNum="undoneNum" :footerState="footerState" />
     </div>
   </div>
@@ -11,6 +11,7 @@
 <script>
 import TodoHeader from "./components/TodoHeader";
 import List from "./components/List";
+import axios from "axios";
 
 export default {
   name: "App",
@@ -31,9 +32,29 @@ export default {
     },
   },
   mounted() {
+    axios({
+      url: "http://127.0.0.1:3000/get",
+      method: "get",
+    })
+      .then((res) => {
+        console.log(res.data);
+        this.todos = res.data;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
     this.$bus.$on("addTodo", (data) => {
       if (data.title === "") return;
       this.todos.unshift(data);
+      // 改变todos时发送ajax
+      axios({
+        url: "http://127.0.0.1:3000/update",
+        method: "post",
+        data: {
+          todos: this.todos,
+        },
+      });
     });
     this.$bus.$on("handleCheck", (data) => {
       this.todos.forEach((todo) => {
@@ -41,12 +62,28 @@ export default {
           todo.done = !todo.done;
         }
       });
+      // 改变todos时发送ajax
+      axios({
+        url: "http://127.0.0.1:3000/update",
+        method: "post",
+        data: {
+          todos: this.todos,
+        },
+      });
     });
     this.$bus.$on("handleDelete", (data) => {
       this.todos.forEach((todo) => {
         if (todo.id === data) {
           this.todos = this.todos.filter((todo) => todo.id !== data);
         }
+      });
+      // 改变todos时发送ajax
+      axios({
+        url: "http://127.0.0.1:3000/update",
+        method: "post",
+        data: {
+          todos: this.todos,
+        },
       });
     });
     this.$bus.$on("selectAll", () => {
@@ -63,18 +100,34 @@ export default {
           todo.done = false;
         });
       }
+      // 改变todos时发送ajax
+      axios({
+        url: "http://127.0.0.1:3000/update",
+        method: "post",
+        data: {
+          todos: this.todos,
+        },
+      });
     });
     this.$bus.$on("setState", (state) => {
       this.footerState = state;
     });
     this.$bus.$on("clearDone", () => {
-      let leftTodos = new Array;
+      let leftTodos = new Array();
       this.todos.forEach((item) => {
-        if(!item.done) {
+        if (!item.done) {
           leftTodos.push(item);
         }
-      })
+      });
       this.todos = leftTodos;
+      // 改变todos时发送ajax
+      axios({
+        url: "http://127.0.0.1:3000/update",
+        method: "post",
+        data: {
+          todos: this.todos,
+        },
+      });
     });
   },
 };
